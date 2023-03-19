@@ -3,6 +3,7 @@
 #include "biquad_filter.h"
 #include "fir_filter.h"
 #include "logger.h"
+#include "trajectory_generator.h"
 
 int main()
 {
@@ -105,8 +106,30 @@ int main()
     BiquadFilter biquadFilter3;
     std::vector<float> outputsBiquad3 = biquadFilter3.process(outputsFir3, numerator, denominator);
 
+
+    // std::vector<float> timeVecIn = {1.9672, 2.6522, 0.5111};
+    // std::vector<float> timeVecOut;
+    // timeVecOut.resize(timeVecIn.size());
+
+    std::vector<float> kinematicConstarints = {120, 61, 23, 45};
+    TrajectoryGenerator trajectoryGenerator(kinematicConstarints);
+
+    trajectoryGenerator.generateTrajectory(0, 120, 0.001);
+    std::vector<float> trajectoryPoints = trajectoryGenerator.getTrajectoryPoints();
+    // timeVecOut = trajectoryGenerator.checkConstraints(timeVecIn);
+    // for (size_t i = 0; i < timeVecOut.size(); i++)
+    // {
+    //     std::cout << timeVecOut[i] << std::endl;
+    // }
+
+    // trajectoryGenerator.generateTrajectory(0, 100, 0.001);
+
+
+
+
     Logger logger("/home/kose/workspace/trajectory-generator/output.txt");
-    logger.Log(outputsBiquad3);
+    logger.Log(trajectoryPoints);
+
 
     return 0;
 }
