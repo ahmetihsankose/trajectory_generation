@@ -9,16 +9,19 @@ public:
     TrajectoryGenerator(std::vector<float> &kinematicConstraints);
     ~TrajectoryGenerator() = default;
 
-    void setKinematicConstraints(std::vector<float> &kinematicConstraints);
         
     std::vector<float> getTimeVecOut() const { return TimeVecOut; }
-    void generateTrajectory(const float &initialPosition, const float &finalPosition, const float &samplingTime);
+    void generateTrajectory(const float &samplingTime);
 
     std::vector<float> getTrajectoryPoints() const { return TrajectoryPoints; }
+    std::vector<float> getTrajectoryVelocities() const { return TrajectoryVelocities; }
+    std::vector<float> getTrajectoryAccelerations() const { return TrajectoryAccelerations; }
+    std::vector<float> getTrajectoryJerk() const { return TrajectoryJerk; }
 
 private:
+    void setKinematicConstraints(std::vector<float> &kinematicConstraints);
     std::vector<float> checkConstraints(const std::vector<float> &timeVecIn);
-
+    std::vector<float> generateCoefficents(int length, float sampleTime); // this coefficient for the trajectory generation
 private:
     float MaxDistance;   
     float MaxVelocity;
@@ -37,4 +40,7 @@ private:
     std::vector<float> TimeVecOut;
 
     std::vector<float> TrajectoryPoints;
+    std::vector<float> TrajectoryVelocities;
+    std::vector<float> TrajectoryAccelerations;
+    std::vector<float> TrajectoryJerk;
 };

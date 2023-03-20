@@ -53,10 +53,18 @@ std::vector<float> TrajectoryGenerator::checkConstraints(const std::vector<float
     return TimeVecOut;
 }
 
-void TrajectoryGenerator::generateTrajectory(const float &initialPosition, const float &finalPosition, const float &samplingTime)
+std::vector<float> TrajectoryGenerator::generateCoefficents(int length, float sampleTime)
 {
-    InitialPosition = initialPosition;
-    FinalPosition = finalPosition;
+    std::vector<float> vec(length);
+    vec[0] = 1.0 / (length * sampleTime);
+    vec[length - 1] = -1.0 / (length * sampleTime);
+    return vec;
+}
+
+void TrajectoryGenerator::generateTrajectory(const float &samplingTime)
+{
+    // InitialPosition = initialPosition;
+    // FinalPosition = finalPosition;
     SamplingTime = samplingTime;
 
     std::vector<float> timeVecIn;
@@ -76,110 +84,68 @@ void TrajectoryGenerator::generateTrajectory(const float &initialPosition, const
     std::vector<int> Nparams;
     Nparams.resize(n);
     TotalDuration = 0;
+    std::vector<float> numerator = {0, SamplingTime}; // biqaud filter
+    std::vector<float> denominator = {1, -1};         // biqaud filter
+
+    FirFilter firFilter;
+    BiquadFilter biquadFilter;
+
     for (int i = 0; i < n; i++)
     {
         Nparams[i] = ceil(TimeVecOut[i] / SamplingTime);
         TotalDuration += Nparams[i] * SamplingTime;
-        std::cout << "Nparams[" << i << "] = " << Nparams[i] << std::endl;
+    }
+
+    std::vector<float> inputs;
+    inputs.resize(TotalDuration / samplingTime);
+    std::cout << "TotalDuration: " << TotalDuration << " seconds " << std::endl;
+
+    for (int i = 0; i < inputs.size(); i++)
+    {
+        inputs[i] = MaxDistance; // input signal (temporary)
+    }
+
+    for (int i = 0; i < n; i++)
+    {
+        if (i == 0)
+        {
+            firFilter.process(inputs, generateCoefficents(Nparams[i], samplingTime));
+            biquadFilter.process(firFilter.getOutputs(), numerator, denominator);
+        }
+        else
+        {
+            firFilter.process(biquadFilter.getOutputs(), generateCoefficents(Nparams[i], samplingTime));
+            biquadFilter.process(firFilter.getOutputs(), numerator, denominator);
+        }
     }
 
     ///////////////////////////////////////
 
-    std::vector<float> numerator = {0, SamplingTime}; // biqaud filter
-    std::vector<float> denominator = {1, -1};         // biqaud filter
-
     // first block
 
-    std::vector<float> coefficients1(Nparams[0] + 1);
+    // FirFilter firFilter1;
+    // BiquadFilter biquadFilter1;
 
-    for (size_t i = 0; i < coefficients1.size(); i++)
-    {
-        if (i == 0)
-        {
-            coefficients1[i] = 1.0 / (coefficients1.size() - 1) / samplingTime;
-            continue;
-        }
-        else if (i == coefficients1.size() - 1)
-        {
-            coefficients1[i] = -1.0 / (coefficients1.size() - 1) / samplingTime;
-            continue;
-        }
-        else
-        {
-            coefficients1[i] = 0;
-        }
-    }
+    // std::vector<float> outputFirFilter1 = firFilter1.process(inputs, generateCoefficents(Nparams[0], samplingTime));
+    // std::vector<float> outputIIRFilter1 = biquadFilter1.process(outputFirFilter1, numerator, denominator);
 
-    FirFilter firFilter1;
-    BiquadFilter biquadFilter1;
+    // // second block
 
-    std::vector<float> inputs;
-    inputs.resize(TotalDuration/samplingTime);
-    std::cout << "inputs.size() = " << inputs.size() << std::endl;
-    std::cout << "TotalDuration = " << TotalDuration << std::endl;
-    for (int i = 0; i < inputs.size(); i++)
-    {
-        inputs[i] = FinalPosition; // input signal (temporary)
-    }
+    // FirFilter firFilter2;
+    // BiquadFilter biquadFilter2;
 
-    std::vector<float> outputFirFilter1 = firFilter1.process(inputs, coefficients1);
-    std::vector<float> outputIIRFilter1 = biquadFilter1.process(outputFirFilter1, numerator, denominator);
+    // std::vector<float> outputFirFilter2 = firFilter2.process(outputIIRFilter1, generateCoefficents(Nparams[1], samplingTime));
+    // std::vector<float> outputIIRFilter2 = biquadFilter2.process(outputFirFilter2, numerator, denominator);
 
-    // second block
-    std::vector<float> coefficients2(Nparams[1] + 1);
-    std::cout << "coefficients2.size() = " << coefficients2.size() << std::endl;
+    // // third block
 
-    for (size_t i = 0; i < coefficients2.size(); i++)
-    {
-        if (i == 0)
-        {
-            coefficients2[i] = 1.0 / (coefficients2.size() - 1) / samplingTime;
-            continue;
-        }
-        else if (i == coefficients2.size() - 1)
-        {
-            coefficients2[i] = -1.0 / (coefficients2.size() - 1) / samplingTime;
-            continue;
-        }
-        else
-        {
-            coefficients2[i] = 0;
-        }
-    }
+    // FirFilter firFilter3;
+    // BiquadFilter biquadFilter3;
 
-    FirFilter firFilter2;
-    BiquadFilter biquadFilter2;
+    // std::vector<float> outputFirFilter3 = firFilter3.process(outputIIRFilter2, generateCoefficents(Nparams[2], samplingTime));
+    // std::vector<float> outputIIRFilter3 = biquadFilter3.process(outputFirFilter3, numerator, denominator);
 
-    std::vector<float> outputFirFilter2 = firFilter2.process(outputIIRFilter1, coefficients2);
-    std::vector<float> outputIIRFilter2 = biquadFilter2.process(outputFirFilter2, numerator, denominator);
-
-    // third block
-    std::vector<float> coefficients3(Nparams[2] + 1);
-
-    for (size_t i = 0; i < coefficients3.size(); i++)
-    {
-        if (i == 0)
-        {
-            coefficients3[i] = 1.0 / (coefficients3.size() - 1) / samplingTime;
-            continue;
-        }
-        else if (i == coefficients3.size() - 1)
-        {
-            coefficients3[i] = -1.0 / (coefficients3.size() - 1) / samplingTime;
-            continue;
-        }
-        else
-        {
-            coefficients3[i] = 0;
-        }
-    }
-
-    FirFilter firFilter3;
-    BiquadFilter biquadFilter3;
-
-    std::vector<float> outputFirFilter3 = firFilter3.process(outputIIRFilter2, coefficients3);
-    std::vector<float> outputIIRFilter3 = biquadFilter3.process(outputFirFilter3, numerator, denominator);
-
-    TrajectoryPoints = outputIIRFilter3;
+    TrajectoryPoints = biquadFilter.getOutputs();
+    TrajectoryVelocities = firFilter.getOutputs();
     std::cout << "Trajectory generated" << std::endl;
 }

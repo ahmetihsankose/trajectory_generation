@@ -9,8 +9,8 @@ private:
     std::ofstream MyFile;
 
 public:
-    Logger(std::string fileName);
+    Logger();
     ~Logger();
-    void Log(std::vector<float> data);
+    void Log(const std::vector<float> &data, const std::string &fileName);
 
 };

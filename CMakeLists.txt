@@ -13,7 +13,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 FILE(GLOB SOURCE_FILES *.cpp)
 FILE(GLOB HEADER_FILES *.h)
 
+find_package(Threads REQUIRED)
+
 add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
+
+target_link_libraries(${PROJECT_NAME} PRIVATE Threads::Threads)
 
 
 
