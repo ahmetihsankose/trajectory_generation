@@ -10,7 +10,7 @@ int main()
 {
     using clock = std::chrono::steady_clock;
     auto begin = clock::now();
-    std::vector<float> kinematicConstarints = {120, 61, 23, 45};
+    std::vector<float> kinematicConstarints = {3, 61, 23, 45};
     TrajectoryGenerator trajectoryGenerator(kinematicConstarints);
     trajectoryGenerator.generateTrajectory(0.001);
     auto end = clock::now();
@@ -21,7 +21,7 @@ int main()
     std::vector<float> trajectoryVelocities = trajectoryGenerator.getTrajectoryVelocities();
 
     Logger logger;
-    logger.Log(trajectoryVelocities, "output.txt");
+    logger.Log(trajectoryPoints, "../output.txt");
 
     return 0;
 }
