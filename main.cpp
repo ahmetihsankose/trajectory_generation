@@ -10,7 +10,7 @@ int main()
 {
     using clock = std::chrono::steady_clock;
     auto begin = clock::now();
-    std::vector<float> kinematicConstarints = {3, 61, 23, 45};
+    std::vector<float> kinematicConstarints = {.5, 20, 200, 2000};
     TrajectoryGenerator trajectoryGenerator(kinematicConstarints);
     trajectoryGenerator.generateTrajectory(0.001);
     auto end = clock::now();
