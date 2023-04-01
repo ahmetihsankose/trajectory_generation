@@ -13,7 +13,7 @@ public:
     std::vector<float> getTimeVecOut() const { return TimeVecOut; }
     void generateTrajectory(const float &samplingTime);
 
-    std::vector<float> getTrajectoryPoints() const { return TrajectoryPoints; }
+    std::vector<float> getTrajectoryPositions() const { return TrajectoryPositions; }
     std::vector<float> getTrajectoryVelocities() const { return TrajectoryVelocities; }
     std::vector<float> getTrajectoryAccelerations() const { return TrajectoryAccelerations; }
     std::vector<float> getTrajectoryJerk() const { return TrajectoryJerk; }
@@ -39,7 +39,7 @@ private:
 private:
     std::vector<float> TimeVecOut;
 
-    std::vector<float> TrajectoryPoints;
+    std::vector<float> TrajectoryPositions;
     std::vector<float> TrajectoryVelocities;
     std::vector<float> TrajectoryAccelerations;
     std::vector<float> TrajectoryJerk;

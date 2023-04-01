@@ -17,11 +17,11 @@ int main()
 
     std::cout << "Time taken: " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "ms" << std::endl;
 
-    std::vector<float> trajectoryPoints = trajectoryGenerator.getTrajectoryPoints();
+    std::vector<float> trajectoryPositions = trajectoryGenerator.getTrajectoryPositions();
     std::vector<float> trajectoryVelocities = trajectoryGenerator.getTrajectoryVelocities();
 
     Logger logger;
-    logger.Log(trajectoryPoints, "../output.txt");
+    logger.Log(trajectoryPositions, "../output.txt");
 
     return 0;
 }

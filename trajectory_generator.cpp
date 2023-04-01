@@ -119,33 +119,7 @@ void TrajectoryGenerator::generateTrajectory(const float &samplingTime)
         }
     }
 
-    ///////////////////////////////////////
-
-    // first block
-
-    // FirFilter firFilter1;
-    // BiquadFilter biquadFilter1;
-
-    // std::vector<float> outputFirFilter1 = firFilter1.process(inputs, generateCoefficents(Nparams[0], samplingTime));
-    // std::vector<float> outputIIRFilter1 = biquadFilter1.process(outputFirFilter1, numerator, denominator);
-
-    // // second block
-
-    // FirFilter firFilter2;
-    // BiquadFilter biquadFilter2;
-
-    // std::vector<float> outputFirFilter2 = firFilter2.process(outputIIRFilter1, generateCoefficents(Nparams[1], samplingTime));
-    // std::vector<float> outputIIRFilter2 = biquadFilter2.process(outputFirFilter2, numerator, denominator);
-
-    // // third block
-
-    // FirFilter firFilter3;
-    // BiquadFilter biquadFilter3;
-
-    // std::vector<float> outputFirFilter3 = firFilter3.process(outputIIRFilter2, generateCoefficents(Nparams[2], samplingTime));
-    // std::vector<float> outputIIRFilter3 = biquadFilter3.process(outputFirFilter3, numerator, denominator);
-
-    TrajectoryPoints = biquadFilter.getOutputs();
+    TrajectoryPositions = biquadFilter.getOutputs();
     TrajectoryVelocities = firFilter.getOutputs();
     std::cout << "Trajectory generated" << std::endl;
 }
