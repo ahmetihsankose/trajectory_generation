@@ -1,5 +1,5 @@
-# Trajectory Generator
-Trajectory generator with using FIR filter
+# Trajectory Generation
+Trajectory generation with using FIR filter
 
 This is an entertainment C++ project that generates a trajectory by applying predetermined smoothings under certain constraints on a single axis.
 
