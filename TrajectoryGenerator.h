@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
-#include "fir_filter.h"
-#include "biquad_filter.h"
+#include "FirFilter.h"
+#include "BiquadFilter.h"
 
 class TrajectoryGenerator
 {

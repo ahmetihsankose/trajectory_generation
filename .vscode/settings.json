@@ -53,6 +53,12 @@
         "stop_token": "cpp",
         "thread": "cpp",
         "tuple": "cpp",
-        "codecvt": "cpp"
+        "codecvt": "cpp",
+        "cstdarg": "cpp",
+        "algorithm": "cpp",
+        "iterator": "cpp",
+        "memory_resource": "cpp",
+        "numeric": "cpp",
+        "random": "cpp"
     }
 }

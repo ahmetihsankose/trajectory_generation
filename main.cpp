@@ -1,16 +1,16 @@
 #include <iostream>
 #include <vector>
-#include "biquad_filter.h"
-#include "fir_filter.h"
-#include "logger.h"
-#include "trajectory_generator.h"
+#include "BiquadFilter.h"
+#include "FirFilter.h"
+#include "Logger.h"
+#include "TrajectoryGenerator.h"
 #include <thread>
 
 int main()
 {
     using clock = std::chrono::steady_clock;
     auto begin = clock::now();
-    std::vector<float> kinematicConstarints = {.5, 20, 200, 2000};
+    std::vector<float> kinematicConstarints = {50, 20, 200, 2000};
     TrajectoryGenerator trajectoryGenerator(kinematicConstarints);
     trajectoryGenerator.generateTrajectory(0.001);
     auto end = clock::now();

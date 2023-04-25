@@ -1,7 +1,8 @@
 #pragma once
-#include "filter.h"
-#include <stdlib.h>
+#include "Filter.h"
+#include <omp.h>
 
+#define ENABLE_PARALLEL_PROCESSING TRUE
 
 class BiquadFilter : public Filter
 {
@@ -12,15 +13,4 @@ public:
     std::vector<float> process(const std::vector<float> &inputs,
                                const std::vector<float> &numCoeff,
                                const std::vector<float> &denCoeff);
-
-    float *process(const float *inputs, int inputsSize,
-                   const float *numCoeff, const float *denCoeff, 
-                   const int coeffSize);
-
-private:
-    struct Input
-    {
-        float *Outputs;
-        int OutputsSize;
-    } input;
 };

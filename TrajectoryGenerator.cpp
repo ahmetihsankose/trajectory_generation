@@ -1,5 +1,5 @@
-#include "trajectory_generator.h"
-#include <math.h>
+#include "TrajectoryGenerator.h"
+#include <cmath>
 #include <algorithm>
 #include <iostream>
 
@@ -16,13 +16,10 @@ void TrajectoryGenerator::setKinematicConstraints(std::vector<float> &kinematicC
         std::cout << "Kinematic constraints vector size is not 4" << std::endl;
         return;
     }
-    else if (KinematicConstraints.size() == 4)
-    {
-        MaxDistance = KinematicConstraints[0];
-        MaxVelocity = KinematicConstraints[1];
-        MaxAcceleration = KinematicConstraints[2];
-        MaxJerk = KinematicConstraints[3];
-    }
+    MaxDistance = KinematicConstraints[0];
+    MaxVelocity = KinematicConstraints[1];
+    MaxAcceleration = KinematicConstraints[2];
+    MaxJerk = KinematicConstraints[3];
 }
 
 std::vector<float> TrajectoryGenerator::checkConstraints(const std::vector<float> &timeVecIn)
@@ -35,7 +32,7 @@ std::vector<float> TrajectoryGenerator::checkConstraints(const std::vector<float
 
     if (TimeVecOut[n - 2] < TimeVecOut[n - 1])
     {
-        TimeVecOut[n - 1] = sqrt(TimeVecOut[n - 2] * TimeVecOut[n - 1]);
+        TimeVecOut[n - 1] = std::sqrt(TimeVecOut[n - 2] * TimeVecOut[n - 1]);
         TimeVecOut[n - 2] = TimeVecOut[n - 1];
     }
 
@@ -43,7 +40,7 @@ std::vector<float> TrajectoryGenerator::checkConstraints(const std::vector<float
     {
         if (TimeVecOut[i] < TimeVecOut[i + 1] + TimeVecOut[i + 2])
         {
-            float a = -TimeVecOut[i + 2] / 2.0 / TimeVecOut[i + 1] + sqrt(pow(TimeVecOut[i + 2] / 2.0 / TimeVecOut[i + 1], 2) + TimeVecOut[i] / TimeVecOut[i + 1]);
+            float a = -TimeVecOut[i + 2] / 2.0 / TimeVecOut[i + 1] + std::sqrt(std::pow(TimeVecOut[i + 2] / 2.0 / TimeVecOut[i + 1], 2) + TimeVecOut[i] / TimeVecOut[i + 1]);
             a = std::min(std::max(a, aMin), aMax);
             TimeVecOut[i] = TimeVecOut[i] / a;
             TimeVecOut[i + 1] = TimeVecOut[i + 1] * a;
@@ -63,8 +60,6 @@ std::vector<float> TrajectoryGenerator::generateCoefficents(int length, float sa
 
 void TrajectoryGenerator::generateTrajectory(const float &samplingTime)
 {
-    // InitialPosition = initialPosition;
-    // FinalPosition = finalPosition;
     SamplingTime = samplingTime;
 
     std::vector<float> timeVecIn;
