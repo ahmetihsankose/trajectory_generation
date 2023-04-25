@@ -1,3 +1,8 @@
+/*
+    Written by Ahmet Ihsan KOSE, Istanbul, Turkey
+    Contact koseahmetihsan@gmail.com
+*/
+
 #include "FirFilter.h"
 
 std::vector<float> FirFilter::process(const std::vector<float> &inputs, const std::vector<float> &coefficients)

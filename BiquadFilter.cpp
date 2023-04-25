@@ -1,5 +1,9 @@
-#include "BiquadFilter.h"
+/*
+    Written by Ahmet Ihsan KOSE, Istanbul, Turkey
+    Contact koseahmetihsan@gmail.com
+*/
 
+#include "BiquadFilter.h"
 
 std::vector<float> BiquadFilter::process(const std::vector<float> &inputs,
                                          const std::vector<float> &numCoeff,

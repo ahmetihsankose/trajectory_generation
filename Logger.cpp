@@ -1,3 +1,8 @@
+/*
+    Written by Ahmet Ihsan KOSE, Istanbul, Turkey
+    Contact koseahmetihsan@gmail.com
+*/
+
 #include "Logger.h"
 
 Logger::Logger()
